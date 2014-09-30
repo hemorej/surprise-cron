@@ -4,10 +4,10 @@ def load_json( filename )
   begin
     JSON.parse( IO.read(filename) )
   rescue Exception => e
-    log(e.message, "ERROR")
-    log(e.backtrace.inspect, "ERROR")
+    DaemonKit.logger.error(e.message)
+    DaemonKit.logger.error(e.backtrace.inspect)
     raise IOError.new("Error reading specified file")
-  end  
+  end
 end
 
 def write_json( hash, location )
@@ -31,15 +31,4 @@ def sanitize_filename(filename)
 
 end
 
-def log(message, type="INFO")
-  
-  if(type =~ /info|error/i)
-    filename = 'logs/' + type.downcase! + '.log'
-  else
-    filename = 'logs/info.log'
-  end
 
-  open(filename, 'a') { |f|
-    f.puts message.to_s
-  }
-end

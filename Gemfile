@@ -1,6 +1,14 @@
 source 'https://rubygems.org'
 
-gem 'rufus-scheduler'
+gem 'daemon-kit'
+gem 'safely'
+
 gem 'json'
 gem 'daemons'
 gem 'fileutils'
+
+gem 'rufus-scheduler'
+group :development, :test do
+  gem 'rake'
+  gem 'rspec' 
+end

@@ -1,7 +1,5 @@
-require 'rufus-scheduler'
-require 'fileutils'
-
 class Job
+
   def initialize
   end
 
@@ -10,7 +8,8 @@ class Job
   end
 
   def work
-    puts 'Hello, I\'m working '+Time.now.to_s
+    puts "hello "+Time.now.to_s
   end
 
 end
+
