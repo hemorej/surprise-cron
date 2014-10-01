@@ -1,13 +1,14 @@
+$lock = DAEMON_ROOT + "/.rufus-scheduler.lock"
+$failed_jobs = 0
+$failure_threshold = 10
+
 DaemonKit::Application.running! do |config|
   config.trap( 'INT' ) do
     puts "Exiting"
-    File.delete(DAEMON_ROOT + "/.rufus-scheduler.lock")
+    File.delete($lock)
   end
   # config.trap( 'TERM', Proc.new { puts 'Going down' } )
 end
-
-$lock = DAEMON_ROOT + "/.rufus-scheduler.lock"
-scheduler = Rufus::Scheduler.new(:lockfile =>  $lock)
 
 def reset_frequency(frequency_offset = 0)
   $frequency_start = Time.now + frequency_offset
@@ -15,8 +16,8 @@ def reset_frequency(frequency_offset = 0)
   $interval_end    = $interval_start + $block
 end
 
-# Run our 'cron' dameon, suspending the current thread
-# DaemonKit::Cron.run
+
+scheduler = Rufus::Scheduler.new(:lockfile =>  $lock)
 
 $interval = DaemonKit.arguments.options[:interval]
 $frequency = DaemonKit.arguments.options[:frequency]
@@ -33,7 +34,8 @@ scheduler.every '1d', :first_at => first, :overlap => false do |job|
       $count = $count + 1
     rescue StandardError => error
       puts "Error occurred while executing job"
-#      what to do, reschedule ? keep going ? count up to treshold and quit completely ?
+      $failed_jobs = $failed_jobs + 1
+      DaemonKit::Application.stop if $failed_jobs >= $failure_threshold
     end
   end
 
