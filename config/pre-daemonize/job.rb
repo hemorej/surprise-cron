@@ -43,7 +43,9 @@ class Job
     message_body.gsub!('image_placeholder', feed.entries.first.image )
     message_body.gsub!('greeting_placeholder', greeting)
 
-    raise StandardError, "Email sender/recipient not properly configured" if from_to.values.any?{|v| v.nil? || v.length == 0}
+    if from_to['from'].blank? || from_to['to'].blank?
+      raise StandardError.new("Email sender/recipient not properly configured")
+    end
 
     mail = Mail.new do
       from    from_to['from']

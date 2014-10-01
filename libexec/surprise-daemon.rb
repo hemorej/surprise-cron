@@ -34,6 +34,7 @@ scheduler.every '1d', :first_at => first, :overlap => false do |job|
       $count = $count + 1
     rescue StandardError => error
       puts "Error occurred while executing job"
+      puts error
       $failed_jobs = $failed_jobs + 1
       DaemonKit::Application.stop if $failed_jobs >= $failure_threshold
     end
