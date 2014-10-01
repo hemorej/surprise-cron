@@ -6,9 +6,6 @@ Surprise !
 The cron that runs at a random time. Not entirely random of course, you specify how often you want the job to run and the interval (ie: 3x a week) and it will execute the job at an arbitrary time within that period.  
 This was born out of a very specific need, but I decided to share it anyway.
 
-Work in progress...
-
-
 Usage
 ======
 
@@ -45,3 +42,18 @@ Here's the important things you need to know about. The Job class has a 'work' m
 	├── Gemfile
 	└── log
 
+Installation
+============
+
+The sample job that comes with the default install has a few system dependencies. Before you bundle install, make sure you have the following
+
+    libcurl
+    libxml
+    libxslt
+
+You might need to specify:  
+
+    bundle config build.nokogiri --use-system-libraries  
+
+
+Don't forget to set the email sender and recipients !

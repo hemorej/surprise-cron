@@ -18,7 +18,7 @@ end
 # Run our 'cron' dameon, suspending the current thread
 # DaemonKit::Cron.run
 
-$timespan = DaemonKit.arguments.options[:interval]
+$interval = DaemonKit.arguments.options[:interval]
 $frequency = DaemonKit.arguments.options[:frequency]
 $block = DaemonKit.arguments.options[:block]
 $count = 0
@@ -33,14 +33,14 @@ scheduler.every '1d', :first_at => first, :overlap => false do |job|
       $count = $count + 1
     rescue StandardError => error
       puts "Error occurred while executing job"
-#      what to do, reschedule ? keep going ?
+#      what to do, reschedule ? keep going ? count up to treshold and quit completely ?
     end
   end
 
   elapsed = (Time.now - $frequency_start).to_i
-  if $count >= $frequency || elapsed >= $timespan
+  if $count >= $frequency || elapsed >= $interval
     $count = 0
-    reset_frequency($timespan % elapsed)
+    reset_frequency($interval % elapsed)
     job.next_time = $frequency_start
 
   else
