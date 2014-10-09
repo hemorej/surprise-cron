@@ -1,6 +1,6 @@
 class Surprise
 
-  attr_reader :failed_jobs, :failure_threshold, :frequency_start, :interval_start, :interval_end, :block
+  attr_reader :failed_jobs, :failure_threshold, :frequency_start, :interval_start, :interval_end, :block, :interval, :frequency
   VERSION = '0.1'
 
   def initialize(interval, frequency, check = true)
@@ -40,7 +40,7 @@ class Surprise
       raise OptionParser::InvalidOption, 'Numbers too small'
     end
 
-    if( interval/frequency <= 1)
+    if( interval/frequency < 1)
       raise OptionParser::InvalidOption, 'Numbers too small'
     end
   end
