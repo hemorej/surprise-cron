@@ -1,4 +1,4 @@
-require_relative 'version.rb'
+require File.dirname(__FILE__) + '/../libexec/surprise'
 
 opts.on('-n', '--number NUMBER', Integer, 'how many times it should run') do |freq|
  @options[:frequency] = freq
@@ -22,29 +22,10 @@ end
 begin
   opts.parse(ARGV)
 
-  mandatory = [:frequency, :interval]
-  missing = mandatory.select{ |param| @options[param].nil? }
-  unless missing.empty?
-    puts "Missing options: #{missing.join(', ')}"
-    puts opts
-    exit
-  end
+  Surprise.validate_arguments(@options)
 
-  if(@options[:frequency] < 1 || @options[:interval] < 1)
-    puts "Invalid parameters, numbers too small"
-    exit 22
-  end
-
-  block = (@options[:interval]/@options[:frequency])
-  if(block < 1)
-    puts "Invalid parameters, numbers too small"   
-    exit 22
-  else
-    @options[:block] = block
-  end
-
-rescue OptionParser::InvalidOption, OptionParser::MissingArgument, OptionParser::InvalidArgument
-   puts "Invalid Argument"
+rescue OptionParser::InvalidOption, OptionParser::MissingArgument, OptionParser::InvalidArgument => e
+   puts e.message unless e.message.nil?
    puts opts
    exit
 end
