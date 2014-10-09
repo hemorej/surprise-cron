@@ -8,6 +8,7 @@ rescue LoadError
 end
 
 require File.dirname(__FILE__) + '/../config/environment'
+require File.dirname(__FILE__) + '/../libexec/surprise'
 DaemonKit::Application.running!
 
 RSpec.configure do |config|
