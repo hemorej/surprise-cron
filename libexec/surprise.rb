@@ -55,9 +55,9 @@ class Surprise
 
   def start
 
-    scheduler = Rufus::Scheduler.new(:lockfile =>  $lock)
+    @scheduler = Rufus::Scheduler.new(:lockfile =>  $lock)
 
-    scheduler.every '1d', :first_at => @first, :overlap => false do |job|
+    @scheduler.every '1d', :first_at => @first, :overlap => false do |job|
       if @count < @frequency
         begin
           handler = Job.new
@@ -85,8 +85,14 @@ class Surprise
       end
     end
 
-    scheduler.join
+    @scheduler.join
   end
+
+  def stop
+    File.delete($lock)
+    @scheduler.shutdown
+  end
+
 end
 
 

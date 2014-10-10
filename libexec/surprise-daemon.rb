@@ -6,12 +6,11 @@ DaemonKit::Application.running! do |config|
 
   frequency = DaemonKit.arguments.options[:frequency]
   interval = DaemonKit.arguments.options[:interval]
-
+  
   surprise = Surprise.new(interval, frequency, false)
-  surprise.start
+ 
+  config.trap("TERM") { surprise.stop }
+  config.trap("INT")  { surprise.stop }
 
-  config.trap( 'INT' ) do
-    puts "Exiting"
-    File.delete($lock)
-  end
+  surprise.start
 end
