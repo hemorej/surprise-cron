@@ -88,6 +88,10 @@ class Surprise
     @scheduler.join
   end
 
+  def running?
+    @scheduler.nil? ? false : @scheduler.running?
+  end
+
   def stop
     File.delete($lock)
     @scheduler.shutdown
