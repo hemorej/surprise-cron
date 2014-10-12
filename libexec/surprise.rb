@@ -1,6 +1,6 @@
 class Surprise
 
-  attr_reader :failed_jobs, :failure_threshold, :frequency_start, :interval_start, :interval_end, :block, :interval, :frequency
+  attr_reader :failed_jobs, :failure_threshold, :frequency_start, :interval_start, :interval_end, :block, :interval, :frequency, :runs
   VERSION = '0.1'
 
   def initialize(interval, frequency, check = true)
@@ -16,7 +16,7 @@ class Surprise
     @failed_jobs = 0
     @failure_threshold = 10
 
-    @count = 0
+    @count, @runs = 0, 0
     reset_frequency
     @first = Time.at(rand(@interval_start..@interval_end))
 
@@ -64,7 +64,8 @@ class Surprise
         begin
           handler = Job.new
           handler.work
-          @count = @count + 1
+          @count += 1
+	  @runs += @count
         rescue StandardError => error
           puts "Error occurred while executing job"
           puts error
@@ -91,7 +92,7 @@ class Surprise
   end
 
   def running?
-    @scheduler.threads.nil? ? false : true
+    @scheduler.nil? ? false : @scheduler.threads.any?
   end
 
   def stop

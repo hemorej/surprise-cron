@@ -58,4 +58,62 @@ describe Surprise do
       expect(surprise.frequency).to eq(2)
     end
   end
+
+  
+  describe 'lockfile' do
+    
+    it 'creates on start, deletes on stop' do
+
+      $surprise = Surprise.new(10, 2)
+      surprise_thread = Thread.new{ $surprise.start }
+      file_checker_thread = Thread.new{
+       sleep(1)
+       expect($surprise.running?).to be true
+       daemon_path = File.expand_path("../", File.dirname(__FILE__))
+       expect(File.read(daemon_path+"/.rufus-scheduler.lock")).to_not be_nil
+       $surprise.stop
+       expect{File.read(daemon_path+"/.rufus-scheduler.lock")}.to raise_error(Errno::ENOENT)
+      } 
+
+    surprise_thread.join
+    file_checker_thread.join
+    end
+
+   it 'does not start if lockfile exists' do
+
+      $surprise = Surprise.new(10, 2)
+      $surprise_2 = Surprise.new(20, 4)
+
+      surprise_thread = Thread.new{ $surprise.start }
+
+      file_checker_thread = Thread.new{
+        sleep(1)
+        expect($surprise.running?).to be true
+	expect{$surprise_2.start}.to raise_error(Rufus::Scheduler::NotRunningError)
+
+       $surprise.stop
+      }
+
+    surprise_thread.join
+    file_checker_thread.join
+    
+    end
+  end
+
+  describe 'correctness' do
+    it 'runs the specified number of times' do
+
+      $surprise = Surprise.new(4, 3)
+
+      surprise_thread = Thread.new{ $surprise.start }
+      sleeper_thread = Thread.new{ 
+	sleep(4)
+	expect($surprise.runs).to be >= 3
+	$surprise.stop
+      }
+    surprise_thread.join
+    sleeper_thread.join
+
+    end
+  end
 end
