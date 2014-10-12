@@ -20,6 +20,8 @@ class Surprise
     reset_frequency
     @first = Time.at(rand(@interval_start..@interval_end))
 
+    $lock = DAEMON_ROOT + "/.rufus-scheduler.lock" if $lock.nil?
+
   end 
 
   def self.version
@@ -66,8 +68,8 @@ class Surprise
         rescue StandardError => error
           puts "Error occurred while executing job"
           puts error
-          failed_jobs = failed_jobs + 1
-          DaemonKit::Application.stop if failed_jobs >= failure_threshold
+          @failed_jobs = @failed_jobs + 1
+          DaemonKit::Application.stop if @failed_jobs >= @failure_threshold
         end
       end
 
@@ -89,7 +91,7 @@ class Surprise
   end
 
   def running?
-    @scheduler.nil? ? false : @scheduler.running?
+    @scheduler.threads.nil? ? false : true
   end
 
   def stop

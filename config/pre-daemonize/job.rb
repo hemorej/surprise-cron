@@ -16,10 +16,10 @@ class Job
     now = Time.now
     hrs = now.hour
 
-    msg = "Mornin' Sunshine!" if (hrs >  0)
-    msg = "Good morning" if (hrs >  6)
-    msg = "Good afternoon" if (hrs >  12)
-    msg = "Good evening" if (hrs > 17)
+    msg = "Mornin' Sunshine!" if (hrs >=  0)
+    msg = "Good morning" if (hrs >=  6)
+    msg = "Good afternoon" if (hrs >=  12)
+    msg = "Good evening" if (hrs >= 17)
 
     msg
   end
