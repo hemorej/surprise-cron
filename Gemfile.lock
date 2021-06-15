@@ -27,10 +27,12 @@ GEM
     mail (2.7.1)
       mini_mime (>= 0.1.1)
     mini_mime (1.0.2)
-    mini_portile2 (2.4.0)
-    nokogiri (1.10.8)
-      mini_portile2 (~> 2.4.0)
+    mini_portile2 (2.5.1)
+    nokogiri (1.11.4)
+      mini_portile2 (~> 2.5.0)
+      racc (~> 1.4)
     raabro (1.1.6)
+    racc (1.5.2)
     rake (13.0.1)
     rspec (3.9.0)
       rspec-core (~> 3.9.0)
@@ -64,7 +66,7 @@ DEPENDENCIES
   fileutils (~> 1.4.1)
   json
   mail
-  nokogiri (~> 1.10.8)
+  nokogiri (~> 1.11.4)
   rake
   rspec
   rufus-scheduler
