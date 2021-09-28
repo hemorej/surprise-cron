@@ -7,7 +7,7 @@ gem 'json'
 gem 'daemons'
 gem 'fileutils', '~> 1.4.1'
 gem 'mail'
-gem 'nokogiri', '~> 1.11.4'
+gem 'nokogiri', '~> 1.12.5'
 gem 'curb', '~> 0.8.6'
 gem 'feedjira', '~> 1.4.0'
 
