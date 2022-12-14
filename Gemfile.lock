@@ -2,7 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     concurrent-ruby (1.1.5)
-    crass (1.0.5)
+    crass (1.0.6)
     curb (0.8.8)
     daemon-kit (0.3.3)
       eventmachine (>= 0.12.10)
@@ -21,7 +21,7 @@ GEM
       et-orbi (~> 1.1, >= 1.1.8)
       raabro (~> 1.1)
     json (2.3.0)
-    loofah (2.4.0)
+    loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
